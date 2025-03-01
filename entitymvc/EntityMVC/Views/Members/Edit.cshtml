@@ -1,0 +1,76 @@
+@model EntityMVC.Models.Member
+
+@{
+    ViewData["Title"] = "Üye Düzenle";
+}
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <i class="fas fa-user-edit"></i> Üye Bilgilerini Düzenle
+                </h2>
+            </div>
+            <div class="card-body">
+                <form asp-action="Edit" method="post">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="RegisterDate" />
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-12 text-center">
+                            <img src="@Model.GravatarUrl" alt="@Model.FirstName" 
+                                 class="rounded-circle member-avatar" style="width: 100px; height: 100px;" />
+                        </div>
+                    </div>
+                    
+                    <div class="form-group mb-3">
+                        <label asp-for="FirstName" class="form-label">
+                            <i class="fas fa-user"></i> Ad
+                        </label>
+                        <input asp-for="FirstName" class="form-control" placeholder="Adınızı giriniz" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="form-group mb-3">
+                        <label asp-for="LastName" class="form-label">
+                            <i class="fas fa-user"></i> Soyad
+                        </label>
+                        <input asp-for="LastName" class="form-control" placeholder="Soyadınızı giriniz" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="form-group mb-3">
+                        <label asp-for="Email" class="form-label">
+                            <i class="fas fa-envelope"></i> Email
+                        </label>
+                        <input asp-for="Email" class="form-control" placeholder="Email adresinizi giriniz" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="form-group mb-3">
+                        <label asp-for="BirthDate" class="form-label">
+                            <i class="fas fa-calendar"></i> Doğum Tarihi
+                        </label>
+                        <input asp-for="BirthDate" class="form-control" type="date" />
+                        <span asp-validation-for="BirthDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Kaydet
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Listeye Dön
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
+} 

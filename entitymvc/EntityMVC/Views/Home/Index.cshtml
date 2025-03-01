@@ -1,0 +1,87 @@
+﻿@model dynamic
+@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+<div class="home-container">
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Üye Yönetim Sistemi</h1>
+            <p class="hero-subtitle">Üyelerinizi kolayca yönetin ve takip edin</p>
+            <a asp-controller="Members" asp-action="Index" class="hero-button">
+                <i class="fas fa-users"></i> Üyeleri Görüntüle
+            </a>
+        </div>
+    </div>
+
+    <div class="stats-section">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Toplam Üye</h3>
+                        <p class="stat-number">@Model.TotalMembers</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Bugünkü Yeni Üyeler</h3>
+                        <p class="stat-number">@Model.NewMembersToday</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-birthday-cake"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Ortalama Yaş</h3>
+                        <p class="stat-number">@Math.Round(Model.AverageAge, 1)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="features-section">
+        <h2 class="section-title">Özellikler</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h3>Güvenli Veri Yönetimi</h3>
+                    <p>Üye bilgileriniz güvenle saklanır ve yönetilir.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>İstatistikler</h3>
+                    <p>Detaylı üye istatistikleri ve raporlama.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Mobil Uyumlu</h3>
+                    <p>Her cihazda sorunsuz çalışan arayüz.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+@{
+    ViewData["Title"] = "Güvenli Sayfa";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Güvenli Sayfaya Hoş Geldiniz</h1>
+    <p>Bu sayfayı sadece giriş yapmış kullanıcılar görebilir.</p>
+    
+    <div class="mt-4">
+        <h3>Kullanıcı Bilgileri:</h3>
+        <p>Kullanıcı Adı: @ViewBag.Username</p>
+        <p>Rol: @ViewBag.Role</p>
+    </div>
+</div> 

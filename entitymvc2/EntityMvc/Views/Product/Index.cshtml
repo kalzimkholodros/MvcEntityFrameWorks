@@ -1,0 +1,121 @@
+@model IEnumerable<Product>
+
+@{
+    ViewData["Title"] = "Ürünler";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>@ViewData["Title"]</h1>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Yeni Ürün
+        </a>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                <input type="text" id="searchInput" class="form-control" placeholder="Ürün ara...">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <select id="categoryFilter" class="form-select">
+                <option value="">Tüm Kategoriler</option>
+                @foreach (var category in ViewBag.Categories)
+                {
+                    <option value="@category.Id">@category.Name</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select id="sortOrder" class="form-select">
+                <option value="name">İsme Göre (A-Z)</option>
+                <option value="name_desc">İsme Göre (Z-A)</option>
+                <option value="price">Fiyata Göre (Artan)</option>
+                <option value="price_desc">Fiyata Göre (Azalan)</option>
+                <option value="stock">Stok Miktarına Göre (Artan)</option>
+                <option value="stock_desc">Stok Miktarına Göre (Azalan)</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row" id="productGrid">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 mb-4 product-item" 
+                 data-name="@item.Name.ToLower()" 
+                 data-category="@item.CategoryId" 
+                 data-price="@item.Price" 
+                 data-stock="@item.StockQuantity">
+                <partial name="_ProductCard" model="item" />
+            </div>
+        }
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i> Henüz hiç ürün eklenmemiş.
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            function filterProducts() {
+                var searchText = $('#searchInput').val().toLowerCase();
+                var selectedCategory = $('#categoryFilter').val();
+                var sortOrder = $('#sortOrder').val();
+
+                $('.product-item').each(function() {
+                    var $item = $(this);
+                    var name = $item.data('name');
+                    var category = $item.data('category').toString();
+                    var show = true;
+
+                    if (searchText && !name.includes(searchText)) {
+                        show = false;
+                    }
+
+                    if (selectedCategory && category !== selectedCategory) {
+                        show = false;
+                    }
+
+                    $item.toggle(show);
+                });
+
+                var $items = $('.product-item:visible').detach();
+                
+                $items.sort(function(a, b) {
+                    var $a = $(a);
+                    var $b = $(b);
+                    
+                    switch(sortOrder) {
+                        case 'name':
+                            return $a.data('name').localeCompare($b.data('name'));
+                        case 'name_desc':
+                            return $b.data('name').localeCompare($a.data('name'));
+                        case 'price':
+                            return $a.data('price') - $b.data('price');
+                        case 'price_desc':
+                            return $b.data('price') - $a.data('price');
+                        case 'stock':
+                            return $a.data('stock') - $b.data('stock');
+                        case 'stock_desc':
+                            return $b.data('stock') - $a.data('stock');
+                        default:
+                            return 0;
+                    }
+                });
+
+                $('#productGrid').append($items);
+            }
+
+            $('#searchInput').on('input', filterProducts);
+            $('#categoryFilter').on('change', filterProducts);
+            $('#sortOrder').on('change', filterProducts);
+        });
+    </script>
+} 

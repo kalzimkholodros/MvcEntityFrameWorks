@@ -1,0 +1,122 @@
+/* Index sayfası stilleri */
+.product-list {
+    margin-top: 2rem;
+}
+
+.product-table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.product-table th {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.product-table td {
+    vertical-align: middle;
+}
+
+.product-actions {
+    min-width: 160px;
+}
+
+/* Create ve Edit sayfası stilleri */
+.product-form {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.product-form .card {
+    border-radius: 10px;
+}
+
+.product-form .card-header {
+    border-radius: 10px 10px 0 0;
+}
+
+.product-form .form-label {
+    font-weight: 500;
+    color: #495057;
+}
+
+.product-form .form-control {
+    font-size: 1rem;
+    padding: 0.75rem;
+}
+
+.product-form textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Delete sayfası stilleri */
+.delete-card {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.delete-card .card-header {
+    border-radius: 10px 10px 0 0;
+}
+
+.delete-info {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+.delete-info dt {
+    color: #6c757d;
+    font-weight: 600;
+}
+
+.delete-info dd {
+    margin-bottom: 1rem;
+}
+
+/* Genel animasyonlar */
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+.slide-in {
+    transform: translateY(20px);
+    opacity: 0;
+    animation: slideIn 0.5s ease-out forwards;
+}
+
+@keyframes slideIn {
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive düzenlemeler */
+@media (max-width: 576px) {
+    .product-table {
+        font-size: 0.9rem;
+    }
+
+    .product-actions {
+        min-width: auto;
+    }
+
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
+}
+
+/* Özel buton stilleri */
+.btn-group-product {
+    gap: 0.5rem;
+}
+
+.btn-product {
+    min-width: 100px;
+} 

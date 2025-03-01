@@ -1,0 +1,112 @@
+@model IEnumerable<CartItem>
+
+@{
+    ViewData["Title"] = "Sepetim";
+    decimal total = Model.Sum(item => item.Product.Price * item.Quantity);
+}
+
+<div class="container mt-4">
+    <h2><i class="fas fa-shopping-cart me-2"></i>Sepetim</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info mt-4">
+            <i class="fas fa-info-circle me-2"></i>Sepetiniz boş.
+        </div>
+    }
+    else
+    {
+        <div class="card shadow mt-4">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Ürün</th>
+                                <th>Fiyat</th>
+                                <th>Adet</th>
+                                <th>Toplam</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr id="cart-item-@item.Id">
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            @if (!string.IsNullOrEmpty(item.Product.ImageUrl))
+                                            {
+                                                <img src="@item.Product.ImageUrl" alt="@item.Product.Name" style="width: 50px; height: 50px; object-fit: cover;" class="me-3">
+                                            }
+                                            <div>
+                                                <h6 class="mb-0">@item.Product.Name</h6>
+                                                <small class="text-muted">@item.Product.Category?.Name</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>@item.Product.Price.ToString("C2")</td>
+                                    <td>
+                                        <div class="input-group" style="width: 120px;">
+                                            <button class="btn btn-outline-secondary btn-sm" onclick="updateQuantity(@item.Id, @(item.Quantity - 1))">-</button>
+                                            <input type="number" class="form-control form-control-sm text-center" value="@item.Quantity" 
+                                                   onchange="updateQuantity(@item.Id, this.value)" min="1" max="@item.Product.StockQuantity">
+                                            <button class="btn btn-outline-secondary btn-sm" onclick="updateQuantity(@item.Id, @(item.Quantity + 1))">+</button>
+                                        </div>
+                                    </td>
+                                    <td>@((item.Product.Price * item.Quantity).ToString("C2"))</td>
+                                    <td>
+                                        <form asp-action="RemoveFromCart" asp-route-id="@item.Id" method="post" class="d-inline">
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="text-end"><strong>Toplam:</strong></td>
+                                <td><strong>@total.ToString("C2")</strong></td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <a href="@Url.Action("Index", "Product")" class="btn btn-outline-primary">
+                        <i class="fas fa-arrow-left me-2"></i>Alışverişe Devam Et
+                    </a>
+                    <button class="btn btn-success" onclick="checkout()">
+                        <i class="fas fa-check me-2"></i>Ödemeye Geç
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        function updateQuantity(itemId, quantity) {
+            $.post('/Cart/UpdateQuantity', { id: itemId, quantity: quantity })
+                .done(function (response) {
+                    if (response.success) {
+                        location.reload();
+                    } else {
+                        alert(response.message || 'Miktar güncellenirken bir hata oluştu.');
+                    }
+                })
+                .fail(function () {
+                    alert('Miktar güncellenirken bir hata oluştu.');
+                });
+        }
+
+        function checkout() {
+            // Ödeme işlemi için gerekli kodlar buraya eklenecek
+            alert('Ödeme sistemi yakında eklenecek!');
+        }
+    </script>
+} 

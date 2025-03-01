@@ -1,0 +1,49 @@
+@{
+    ViewData["Title"] = "Premium İçerik";
+}
+
+<div class="premium-content-container">
+    <h2>Premium İçerik Sayfası</h2>
+    
+    <div class="premium-article">
+        <h3>Özel Makale: Yazılım Dünyasında Son Gelişmeler</h3>
+        <div class="article-meta">
+            <span class="author">Yazar: John Doe</span>
+            <span class="date">Tarih: @DateTime.Now.ToString("dd/MM/yyyy")</span>
+        </div>
+        <div class="article-content">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            </p>
+            <p>
+                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+        </div>
+    </div>
+
+    <div class="premium-resources">
+        <h3>Premium Kaynaklar</h3>
+        <div class="resource-grid">
+            <div class="resource-card">
+                <i class="fas fa-video"></i>
+                <h4>Video Eğitim</h4>
+                <p>Özel hazırlanmış video eğitim serisi</p>
+                <a href="#" class="btn-watch">İzle</a>
+            </div>
+            <div class="resource-card">
+                <i class="fas fa-file-pdf"></i>
+                <h4>E-Kitap</h4>
+                <p>Detaylı teknik dökümanlar</p>
+                <a href="#" class="btn-download">İndir</a>
+            </div>
+            <div class="resource-card">
+                <i class="fas fa-code"></i>
+                <h4>Kod Örnekleri</h4>
+                <p>Hazır proje şablonları</p>
+                <a href="#" class="btn-view">İncele</a>
+            </div>
+        </div>
+    </div>
+</div> 

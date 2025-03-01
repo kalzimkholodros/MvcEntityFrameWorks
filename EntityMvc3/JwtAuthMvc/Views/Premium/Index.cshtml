@@ -1,0 +1,88 @@
+@model JwtAuthMvc.Models.User
+@{
+    ViewData["Title"] = "Premium Üyelik";
+}
+
+<div class="premium-container">
+    <h2>Premium Üyelik Sayfası</h2>
+    
+    <div class="user-info">
+        <p>Mevcut Bakiye: <span class="balance">@Model.Balance.ToString("C2")</span></p>
+        <p>Premium Durumu: 
+            @if (Model.IsPremium)
+            {
+                <span class="premium-status active">Aktif</span>
+                <p>Bitiş Tarihi: @Model.PremiumEndDate?.ToString("dd/MM/yyyy")</p>
+                @if (ViewBag.ActivePremium != null)
+                {
+                    <p>Kalan Gün: @ViewBag.ActivePremium.RemainingDays gün</p>
+                }
+            }
+            else
+            {
+                <span class="premium-status inactive">Aktif Değil</span>
+            }
+        </p>
+    </div>
+
+    <div class="premium-stats">
+        <h3>Premium Üyelik İstatistikleri</h3>
+        <p>Toplam Premium Üye Sayısı: <strong>@ViewBag.TotalPremiumMembers</strong></p>
+        
+        @if (ViewBag.RecentPremiumMembers != null && ViewBag.RecentPremiumMembers.Count > 0)
+        {
+            <h4>Son Premium Üyeler</h4>
+            <div class="recent-members">
+                @foreach (var premium in ViewBag.RecentPremiumMembers)
+                {
+                    <div class="member-card">
+                        <div class="member-info">
+                            <span class="member-name">@premium.User.Username</span>
+                            <span class="member-date">Katılım: @premium.SubscriptionDate.ToString("dd/MM/yyyy")</span>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    <div class="premium-features">
+        <h3>Premium Üyelik Avantajları</h3>
+        <ul>
+            <li>✨ Özel içeriklere erişim</li>
+            <li>🎯 Reklamsız deneyim</li>
+            <li>🚀 Öncelikli destek</li>
+            <li>💎 Özel indirimler</li>
+        </ul>
+    </div>
+
+    <div class="action-buttons">
+        @if (!Model.IsPremium)
+        {
+            <form asp-action="BuyPremium" method="post" class="premium-form">
+                <button type="submit" class="btn-premium">Premium Üye Ol (99.99₺)</button>
+            </form>
+        }
+
+        <div class="add-balance-section">
+            <h3>Bakiye Yükle</h3>
+            <form asp-action="AddBalance" method="post" class="balance-form">
+                <input type="number" name="amount" step="0.01" min="10" placeholder="Miktar (₺)" required />
+                <button type="submit" class="btn-add-balance">Bakiye Ekle</button>
+            </form>
+        </div>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success mt-3">
+            @TempData["Success"]
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger mt-3">
+            @TempData["Error"]
+        </div>
+    }
+</div> 

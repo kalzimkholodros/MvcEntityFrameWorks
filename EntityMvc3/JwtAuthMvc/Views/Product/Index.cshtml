@@ -1,0 +1,40 @@
+@model IEnumerable<JwtAuthMvc.Models.Product>
+
+@{
+    ViewData["Title"] = "Ürünler";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Ürünler</h1>
+        @if (ViewBag.IsAdmin)
+        {
+            <a asp-action="Create" class="btn btn-primary">Yeni Ürün Ekle</a>
+        }
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <div class="card h-100 @(item.IsPremium ? "border-warning" : "")">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-text">
+                            <strong>Fiyat:</strong> @item.Price.ToString("C")
+                        </p>
+                        @if (item.IsPremium)
+                        {
+                            <span class="badge bg-warning text-dark">Premium</span>
+                        }
+                    </div>
+                    <div class="card-footer text-muted">
+                        <small>Ekleyen: @item.CreatedBy</small>
+                        <br>
+                        <small>Tarih: @item.CreatedAt.ToLocalTime().ToString("g")</small>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div> 

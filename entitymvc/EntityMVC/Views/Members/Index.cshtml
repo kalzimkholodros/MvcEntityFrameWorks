@@ -1,0 +1,119 @@
+@model IEnumerable<EntityMVC.Models.Member>
+
+@{
+    ViewData["Title"] = "Üyeler";
+}
+
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <i class="fas fa-user-plus"></i> Yeni Üye Kaydı
+                </h2>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" method="post">
+                    <div class="form-group mb-3">
+                        <label for="FirstName" class="form-label">
+                            <i class="fas fa-user"></i> Ad
+                        </label>
+                        <input type="text" class="form-control" id="FirstName" name="FirstName" required 
+                               placeholder="Adınızı giriniz">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="LastName" class="form-label">
+                            <i class="fas fa-user"></i> Soyad
+                        </label>
+                        <input type="text" class="form-control" id="LastName" name="LastName" required
+                               placeholder="Soyadınızı giriniz">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="Email" class="form-label">
+                            <i class="fas fa-envelope"></i> Email
+                        </label>
+                        <input type="email" class="form-control" id="Email" name="Email" required
+                               placeholder="Email adresinizi giriniz">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="BirthDate" class="form-label">
+                            <i class="fas fa-calendar"></i> Doğum Tarihi
+                        </label>
+                        <input type="date" class="form-control" id="BirthDate" name="BirthDate" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-save"></i> Kaydet
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card h-100">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h2 class="card-title">
+                    <i class="fas fa-users"></i> Üyeler Listesi
+                </h2>
+                <span class="badge bg-primary">Toplam: @Model.Count()</span>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Profil</th>
+                                <th>Ad</th>
+                                <th>Soyad</th>
+                                <th>Email</th>
+                                <th>Doğum Tarihi</th>
+                                <th>Kayıt Tarihi</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var member in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <img src="@member.GravatarUrl" alt="@member.FirstName" 
+                                             class="rounded-circle member-avatar" />
+                                    </td>
+                                    <td>@member.FirstName</td>
+                                    <td>@member.LastName</td>
+                                    <td>
+                                        <a href="mailto:@member.Email" class="text-decoration-none">
+                                            @member.Email
+                                        </a>
+                                    </td>
+                                    <td>@member.BirthDate.ToShortDateString()</td>
+                                    <td>@member.RegisterDate.ToShortDateString()</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a asp-action="Edit" asp-route-id="@member.Id" 
+                                               class="btn btn-sm btn-warning">
+                                                <i class="fas fa-edit"></i> Düzenle
+                                            </a>
+                                            <form asp-action="Delete" asp-route-id="@member.Id" 
+                                                  method="post" style="display: inline;">
+                                                <button type="submit" class="btn btn-sm btn-danger" 
+                                                        onclick="return confirm('Bu üyeyi silmek istediğinizden emin misiniz?')">
+                                                    <i class="fas fa-trash"></i> Sil
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
+} 

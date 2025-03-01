@@ -1,0 +1,84 @@
+@model Product
+
+<div class="card product-card">
+    @if (string.IsNullOrEmpty(Model.ImageUrl))
+    {
+        <div class="no-image">
+            <i class="fas fa-image"></i>
+        </div>
+    }
+    else
+    {
+        <img src="@Model.ImageUrl" class="card-img-top" alt="@Model.Name">
+    }
+    <div class="card-body">
+        <h5 class="card-title">@Model.Name</h5>
+        <span class="category-badge">@Model.Category?.Name</span>
+        <p class="card-text description">@Model.Description</p>
+        <p class="card-text price">@Model.Price.ToString("C2")</p>
+        
+        <div class="stock-status">
+            @if (Model.StockQuantity > 10)
+            {
+                <span class="in-stock"><i class="fas fa-check-circle"></i> Stokta</span>
+            }
+            else if (Model.StockQuantity > 0)
+            {
+                <span class="low-stock"><i class="fas fa-exclamation-circle"></i> Son @Model.StockQuantity adet</span>
+            }
+            else
+            {
+                <span class="out-of-stock"><i class="fas fa-times-circle"></i> Stokta Yok</span>
+            }
+        </div>
+
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="btn-group w-100">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                    <i class="fas fa-edit"></i> Düzenle
+                </a>
+                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Sil
+                </a>
+            </div>
+        }
+        else
+        {
+            @if (User.Identity.IsAuthenticated)
+            {
+                <button class="btn @(Model.StockQuantity > 0 ? "btn-primary" : "btn-secondary") w-100" 
+                        @(Model.StockQuantity == 0 ? "disabled" : "")
+                        onclick="addToCart(@Model.Id)">
+                    <i class="fas fa-shopping-cart"></i> Sepete Ekle
+                </button>
+            }
+            else
+            {
+                <a href="@Url.Action("Login", "Account")" class="btn btn-primary w-100" 
+                   onclick="return confirm('Satın alma işlemi için önce giriş yapmanız gerekmektedir. Giriş sayfasına yönlendirileceksiniz.')">
+                    <i class="fas fa-shopping-cart"></i> Sepete Ekle
+                </a>
+            }
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function addToCart(productId) {
+            // AJAX call to add product to cart
+            $.post('/Cart/AddToCart', { productId: productId })
+                .done(function (response) {
+                    if (response.success) {
+                        alert('Ürün sepete eklendi!');
+                    } else {
+                        alert('Ürün sepete eklenirken bir hata oluştu.');
+                    }
+                })
+                .fail(function () {
+                    alert('Ürün sepete eklenirken bir hata oluştu.');
+                });
+        }
+    </script>
+} 
